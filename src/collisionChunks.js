@@ -1,7 +1,7 @@
 import { Vector2 } from './vector2.js';
 
 export const CollisionChunks = (function () {
-    return class {
+    return class CollisionChunks {
         constructor (chunkSize, bounds) {
             this.chunkSize = chunkSize; // size of each chunk
             this.chunks = []; // 2d array of chunks

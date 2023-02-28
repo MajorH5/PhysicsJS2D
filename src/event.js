@@ -1,7 +1,7 @@
 // class for basic event emitter
 
 export const Event = (function () {
-    return class {
+    return class Event {
         constructor () {
             this.handlers = [];
         }

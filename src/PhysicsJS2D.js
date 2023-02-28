@@ -12,7 +12,7 @@ export const Physics = (function () {
     // special-constants
     const SEMI_SOIID_TAG = 'S'; // used to differentiate between semi-solid and solid collisions
 
-    return class {
+    return class Physics {
         constructor (bounds) {
             this.bounds           = bounds;  // bounds of the physics world
             this.isActive         = true;    // running state of the engine

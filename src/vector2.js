@@ -1,10 +1,10 @@
 // basic class for 2d vectors
 // methods return new vectors, they do not modify the original vector
 export const Vector2 = (function () {
-    return class {
+    return class Vector2 {
         constructor (x = 0, y = 0) {
-            if (typeof x !== 'number') throw new TypeError('x must be a number');
-            if (typeof y !== 'number') throw new TypeError('y must be a number');
+            if (typeof x !== 'number') throw new TypeError('new Vector2(): must be a number.');
+            if (typeof y !== 'number') throw new TypeError('new Vector2(): must be a number.');
     
             this._x = x;
             this._y = y;
@@ -19,12 +19,12 @@ export const Vector2 = (function () {
         }
 
         set x (value) {
-            if (typeof value !== 'number') throw new TypeError('x must be a number');
+            if (typeof value !== 'number') throw new TypeError('Vector2(): x must be a number.');
             this._x = value;
         }
 
         set y (value ) {
-            if (typeof value !== 'number') throw new TypeError('y must be a number');
+            if (typeof value !== 'number') throw new TypeError('Vector2(): y must be a number.');
             this._y = value;
         }
 

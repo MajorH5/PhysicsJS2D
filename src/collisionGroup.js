@@ -1,7 +1,7 @@
 // class for managing which bodies
 // are allowed to collide with each other
 export const CollisionGroup = (function () {
-    return class {
+    return class CollisionGroup {
         constructor (tagName) {
             this.tag = tagName;
             this.bodies = [];
