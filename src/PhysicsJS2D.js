@@ -8,6 +8,7 @@ export const Physics = (function () {
     const GRAVITY = 1;
     const TERMINAL_VELOCITY = 30;
     const DEFAULT_CHUNK_SIZE = 50; // size of the collision chunks
+    const MIN_VALUE = 1e-5;
 
     // special-constants
     const SEMI_SOIID_TAG = 'S'; // used to differentiate between semi-solid and solid collisions
@@ -94,8 +95,12 @@ export const Physics = (function () {
             body.position = new Vector2(currentX, currentY);
             body.velocity = body.velocity.scale(body.friction);
             
-            body.rotation += body.angularVelocity;
+            body.rotation = (body.rotation + body.angularVelocity) % 360;
             body.angularVelocity *= body.angularFriction;
+
+            if (body.angularVelocity < MIN_VALUE) {
+                body.angularVelocity = 0;
+            }
 
             // run basic static aabb collisions
             if (body.hasCollisions) {
@@ -394,7 +399,7 @@ export const Physics = (function () {
             if (objectCollisionGroup !== null) {
                 // body only wants to collide with these
                 return objectCollisionGroup.get();
-            } else if (body.collisionGroup !== null) {
+            } else if (body.collidesWith !== null) {
                 // this group was not found
                 return [];
             }
