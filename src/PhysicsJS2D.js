@@ -142,8 +142,10 @@ export const Physics = (function () {
                 body.outOfBounds.trigger();
             }
 
-            // update bodyChunks location
-            this.bodyChunks.moveObject(body);
+            if (!body.position.equals(body.previousPosition)) {
+                // update bodyChunks location
+                this.bodyChunks.moveObject(body);
+            }
 
             // all updates complete, inform the body
             body.updated.trigger();
@@ -385,9 +387,6 @@ export const Physics = (function () {
         }
 
         getCollisionBodiesFor (body) {
-            if (body.special) {
-                // console.log(2)
-            }
             // returns all other bodies to check for collisions against
             // for the given body
             let objectCollisionGroup = this.getCollisionGroup(body.collidesWith);

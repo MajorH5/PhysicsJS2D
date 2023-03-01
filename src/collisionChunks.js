@@ -8,7 +8,6 @@ export const CollisionChunks = (function () {
             this.cache = {}; // cache of the chunks an object is in
             this.objects = 0; // number of objects in the chunks
 
-
             this.bounds = null; // bounds of the chunks
             this.chunksX = null; // number of chunks in X direction
             this.chunksY = null; // number of chunks in Y direction
