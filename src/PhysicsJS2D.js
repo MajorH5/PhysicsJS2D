@@ -125,11 +125,13 @@ export const Physics = (function () {
             if (body.position.x < 0) {
                 if (body.boundsConstrained) {
                     body.position.x = 0;
+                    body.velocity.x = 0;
                 }
                 body.outOfBounds.trigger();
             } else if (body.position.x + body.size.x > this.bounds.x) {
                 if (body.boundsConstrained) {
                     body.position.x = this.bounds.x - body.size.x;
+                    body.velocity.x = 0;
                 }
                 body.outOfBounds.trigger();
             }
@@ -138,11 +140,13 @@ export const Physics = (function () {
             if (body.position.y < 0) {
                 if (body.boundsConstrained) {
                     body.position.y = 0;
+                    body.velocity.y = 0;
                 }
                 body.outOfBounds.trigger();
             } else if (body.position.y + body.size.y > this.bounds.y) {
                 if (body.boundsConstrained) {
                     body.position.y = this.bounds.y - body.size.y;
+                    body.velocity.y = 0;
                 }
                 body.outOfBounds.trigger();
             }
