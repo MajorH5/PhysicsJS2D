@@ -31,7 +31,7 @@ export const Physics = (function () {
         setBounds (bounds) {
             // set the bounds of the physics world
             this.bounds = bounds;
-            this.bodies.setBounds(bounds);
+            this.bodyChunks.resize(bounds);
         }
 
         update (dt) {
@@ -292,9 +292,7 @@ export const Physics = (function () {
             let isComingDown = body1.velocity.y > 0;
             let isComingUp = body1.velocity.y < 0;
 
-            let shouldResolveLanding = isSemiSolid ?
-                (hitTopHalf && isComingDown && cameFromAbove) :
-                (hitTopHalf && isComingDown);
+            let shouldResolveLanding = hitTopHalf && isComingDown
             let shouldResolveBottom = hitUnderHalf && isComingUp && !isSemiSolid;
 
             let shouldResolveX = !cameFromAbove &&
