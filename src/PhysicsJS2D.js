@@ -286,13 +286,13 @@ export const Physics = (function () {
             // of this system, bodies are assumed to not wildily change state
             // between frames
 
-            let cameFromBelow = body1.previousPosition.y + h1 <= y2;
-            let cameFromAbove = body1.previousPosition.y >= y2 + h2;
+            let cameFromAbove = body1.previousPosition.y + h1 <= y2;
+            let cameFromBelow = body1.previousPosition.y >= y2 + h2;
 
             let isComingDown = body1.velocity.y > 0;
             let isComingUp = body1.velocity.y < 0;
 
-            let shouldResolveLanding = hitTopHalf && isComingDown
+            let shouldResolveLanding = isSemiSolid ? (hitTopHalf && isComingDown && cameFromAbove) : (hitTopHalf && isComingDown);
             let shouldResolveBottom = hitUnderHalf && isComingUp && !isSemiSolid;
 
             let shouldResolveX = !cameFromAbove &&
