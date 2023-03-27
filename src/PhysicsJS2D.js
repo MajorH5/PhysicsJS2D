@@ -68,20 +68,22 @@ export const Physics = (function () {
             let currentX = previousX + body.velocity.x,
                 currentY = previousY + body.velocity.y;
 
-            if (!body.ignoreGravity && body.boundsConstrained) {
+            if (!body.ignoreGravity) {
                 // if the body is constrained to the world bounds
                 // we need to make sure it doesn't fall out of the world
                 
                 let exceedsFloorBounds = currentY + body.size.y > this.bounds.y;
                 let previousVelocity = body.velocity.y;
 
-                if (exceedsFloorBounds) {
-                    body.velocity.y = 0;
-                    currentY = this.bounds.y - body.size.y;
-                }
-
-                if (!body.floored && exceedsFloorBounds) {
-                    body.onFloor.trigger(previousVelocity);
+                if (body.boundsConstrained) {
+                    if (exceedsFloorBounds) {
+                        body.velocity.y = 0;
+                        currentY = this.bounds.y - body.size.y;
+                    }
+    
+                    if (!body.floored && exceedsFloorBounds) {
+                        body.onFloor.trigger(previousVelocity);
+                    }
                 }
 
                 body.floored = exceedsFloorBounds;
