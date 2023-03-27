@@ -308,6 +308,7 @@ export const Physics = (function () {
                 } else if (hitRightHalf) {
                     body1.position.x = x2 + w2;
                 }
+                body1.velocity.x = 0;
                 return;
             }
 
