@@ -71,7 +71,7 @@ export const Body = (function () {
 
         getCenter () {
             // returns the centere point 
-            return this.position.add(this.size.divide(2));
+            return this.position.add(this.size.div(2));
         }
 
         anchor () {
