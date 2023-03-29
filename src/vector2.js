@@ -56,6 +56,11 @@ export const Vector2 = (function () {
             return new Vector2(this.x / divisor, this.y / divisor);
         }
 
+        normalize () {
+            const magnitude = this.magnitude();
+            return new Vector2(this.x / magnitude, this.y / magnitude);
+        }
+
         magnitude () {
             return Math.sqrt(this.x * this.x + this.y * this.y);
         }
