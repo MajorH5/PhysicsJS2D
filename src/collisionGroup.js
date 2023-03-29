@@ -37,7 +37,7 @@ export const CollisionGroup = (function () {
             this.bodies.push(body);
         }
 
-        remove () {
+        remove (body) {
             // removes a body from the group
             const index = this.bodies.indexOf(body);
             
