@@ -145,6 +145,8 @@ export const CollisionChunks = (function () {
 
                 if (index !== -1) chunk.splice(index, 1);
             }
+
+            this.objects--;
         }
 
         clear () {
