@@ -29,34 +29,42 @@ export const Vector2 = (function () {
         }
 
         add (vector) {
+            if (!(vector instanceof Vector2)) throw new TypeError('Vector2.add(): must be a Vector2.');
             return new Vector2(this.x + vector.x, this.y + vector.y);
         }
 
         subtract (vector) {
+            if (!(vector instanceof Vector2)) throw new TypeError('Vector2.subtract(): must be a Vector2.');
             return new Vector2(this.x - vector.x, this.y - vector.y);
         }
 
         multiply (vector) {
+            if (!(vector instanceof Vector2)) throw new TypeError('Vector2.multiply(): must be a Vector2.');
             return new Vector2(this.x * vector.x, this.y * vector.y);
         }
 
         divide (vector) {
+            if (!(vector instanceof Vector2)) throw new TypeError('Vector2.divide(): must be a Vector2.');
             return new Vector2(this.x / vector.x, this.y / vector.y);
         }
         
         dot (vector) {
+            if (!(vector instanceof Vector2)) throw new TypeError('Vector2.dot(): must be a Vector2.');
             return this.x * vector.x + this.y * vector.y;
         }
 
         equals (vector) {
+            if (!(vector instanceof Vector2)) throw new TypeError('Vector2.equals(): must be a Vector2.');
             return this.x === vector.x && this.y === vector.y;
         }
         
         scale (scalar) {
+            if (typeof scalar !== 'number') throw new TypeError('Vector2.scale(): must be a number.');
             return new Vector2(this.x * scalar, this.y * scalar);
         }
 
         div (divisor) {
+            if (typeof divisor !== 'number') throw new TypeError('Vector2.div(): must be a number.');
             return new Vector2(this.x / divisor, this.y / divisor);
         }
 
