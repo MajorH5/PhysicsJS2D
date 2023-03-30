@@ -43,6 +43,10 @@ export const Vector2 = (function () {
         divide (vector) {
             return new Vector2(this.x / vector.x, this.y / vector.y);
         }
+        
+        dot (vector) {
+            return this.x * vector.x + this.y * vector.y;
+        }
 
         equals (vector) {
             return this.x === vector.x && this.y === vector.y;
