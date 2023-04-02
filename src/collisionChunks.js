@@ -5,7 +5,7 @@ export const CollisionChunks = (function () {
         constructor (chunkSize, bounds) {
             this.chunkSize = chunkSize; // size of each chunk
             this.chunks = []; // 2d array of chunks
-            this.cache = {}; // cache of the chunks an object is in
+            this.cache = new Map(); // cache of the chunks an object is in
             this.objects = 0; // number of objects in the chunks
 
             this.bounds = null; // bounds of the chunks
@@ -89,12 +89,22 @@ export const CollisionChunks = (function () {
 
         storeObjectChunks (object, chunks) {
             // stores the chunks an object is in
-            this.cache[object] = chunks;
+            this.cache.set(object, chunks);
         }
 
         getObjectChunks (object) {
             // gets the chunks an object is in
-            return this.cache[object];
+            return this.cache.get(object);
+        }
+
+        deleteObjectChunks (object) {
+            // deletes the chunks an object is in
+            return this.cache.delete(object);
+        }
+
+        hasObject (object) {
+            // returns true if the object is in the chunks
+            return this.getObjectChunks(object) !== undefined;
         }
         
         moveObject (object) {
@@ -129,11 +139,12 @@ export const CollisionChunks = (function () {
                 }
             }
 
+
             this.storeObjectChunks(object, inserted);
             this.objects++;
         }
 
-        removeObject (object) {
+        removeObject (object, permanent) {
             // removes an object from the chunks it falls within
             const chunks = this.getObjectChunks(object);
 
@@ -146,13 +157,18 @@ export const CollisionChunks = (function () {
                 if (index !== -1) chunk.splice(index, 1);
             }
 
+            if (permanent) {
+                // avoid repeated key creations & deletions
+                this.deleteObjectChunks(object)
+            }
+            
             this.objects--;
         }
 
         clear () {
             // clears all objects
             this.chunks = [];
-            this.cache = {};
+            this.cache = new Map();
             this.objects = 0;
         }
     }

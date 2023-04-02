@@ -442,11 +442,15 @@ export const Physics = (function () {
             // removes all bodies from the physics system
             this.bodies = [];
             this.bodyChunks.clear();
+
+            for (const key in this.collisionGroups) {
+                this.collisionGroups[key].clear();
+            }
         }
 
         hasObject (body) {
             // checks if the given body is in the physics system
-            return this.bodies.includes(body);
+            return this.bodies.includes(body) || this.bodyChunks.hasObject(body);
         }
 
         addBody (body, isStatic) {
@@ -457,7 +461,7 @@ export const Physics = (function () {
                 this.bodies.push(body);
             }
             
-            this.bodyChunks.addObject(body);
+            this.bodyChunks.addObject(body, isStatic);
 
             if (body.collisionGroup !== null) {
                 // add this body to its collision group
@@ -478,8 +482,13 @@ export const Physics = (function () {
                 return;
             }
 
-            this.bodies.splice(this.bodies.indexOf(body), 1);
-            this.bodyChunks.removeObject(body);
+            const bodiesIndex = this.bodies.indexOf(body);
+
+            if (bodiesIndex !== -1) {
+                this.bodies.splice(bodiesIndex, 1);
+            }
+            
+            this.bodyChunks.removeObject(body, true);
 
             if (body.collisionGroup !== null) {
                 // remove this body from its collision group
