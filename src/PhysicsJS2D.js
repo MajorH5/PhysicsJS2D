@@ -153,10 +153,12 @@ export const Physics = (function () {
                 body.outOfBounds.trigger();
             }
 
-            if (!body.position.equals(body.previousPosition)) {
+            if (!body.position.equals(body.previousPosition) || !body.size.equals(body.previousSize)) {
                 // update bodyChunks location
                 this.bodyChunks.moveObject(body);
             }
+
+            body.previousSize = body.size;
 
             // all updates complete, inform the body
             body.updated.trigger();

@@ -23,6 +23,7 @@ export const Body = (function () {
                     properties.angularVelocity : 0.97;
 
             this.previousPosition = this.position;
+            this.previousSize = this.size;
 
             // body properties
             this.boundsConstrained =
