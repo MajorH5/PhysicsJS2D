@@ -35,5 +35,10 @@ export const Event = (function () {
                 }
             }
         }
+
+        // clears all handlers from the event
+        clear () {
+            this.handlers = [];
+        }
     }
 })();
