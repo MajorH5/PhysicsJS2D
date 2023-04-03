@@ -7,7 +7,7 @@ export const Physics = (function () {
     // physics-constants
     const GRAVITY = 1;
     const TERMINAL_VELOCITY = 30;
-    const DEFAULT_CHUNK_SIZE = 50; // size of the collision chunks
+    const DEFAULT_CHUNK_SIZE = 12 * 5; // size of the collision chunks
     const MIN_VALUE = 1e-5;
 
     // special-constants
