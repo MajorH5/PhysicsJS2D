@@ -97,7 +97,7 @@ export const Body = (function () {
             this.position = new Vector2(0, 0);
             this.angularVelocity = 0;
             this.floored = false;
-            this.colliding = {};
+            this.colliding.clear();
         }
 
         setTag (tag, value) {
