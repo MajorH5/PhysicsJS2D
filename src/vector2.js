@@ -2,6 +2,11 @@
 // methods return new vectors, they do not modify the original vector
 export const Vector2 = (function () {
     return class Vector2 {
+        static get zero () { return new Vector2(0, 0) }
+        static get one () { return new Vector2(1, 1) }
+        static get xAxis () { return new Vector2(1, 0) }
+        static get yAxis () { return new Vector2(0, 1) }
+
         constructor (x = 0, y = 0) {
             if (typeof x !== 'number') throw new TypeError('new Vector2(): must be a number.');
             if (typeof y !== 'number') throw new TypeError('new Vector2(): must be a number.');
