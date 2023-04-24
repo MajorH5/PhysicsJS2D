@@ -5,7 +5,7 @@ import { Event } from "./event.js";
 
 export const Body = (function () {
     return class Body {
-        constructor (properties) {
+        constructor (properties = {}) {
             // body physical properties
             this.position = properties.position || new Vector2();
             this.velocity = properties.velocity || new Vector2();

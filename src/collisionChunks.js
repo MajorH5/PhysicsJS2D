@@ -5,7 +5,7 @@ export const CollisionChunks = (function () {
         constructor (chunkSize, bounds) {
             this.chunkSize = chunkSize; // size of each chunk
             this.chunks = []; // 2d array of chunks
-            this.cache = new Map(); // cache of the chunks an object is in
+            this.cache = new WeakMap(); // cache of the chunks an object is in
             this.objects = 0; // number of objects in the chunks
 
             this.bounds = null; // bounds of the chunks
@@ -104,7 +104,7 @@ export const CollisionChunks = (function () {
 
         hasObject (object) {
             // returns true if the object is in the chunks
-            return this.getObjectChunks(object) !== undefined;
+            return this.cache.has(object);
         }
         
         moveObject (object) {

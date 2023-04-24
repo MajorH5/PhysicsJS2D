@@ -15,7 +15,7 @@ export const Physics = (function () {
 
     return class Physics {
         constructor (bounds) {
-            this.bounds           = bounds;  // bounds of the physics world
+            this.bounds           = bounds || Vector2.zero;  // bounds of the physics world
             this.isActive         = true;    // running state of the engine
             this.gravity          = GRAVITY; // gravitational constant
             this.terminalVelocity = TERMINAL_VELOCITY // max fall velocity before gravity is ignored
