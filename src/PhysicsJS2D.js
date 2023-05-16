@@ -19,19 +19,36 @@ export const Physics = (function () {
             this.isActive         = true;    // running state of the engine
             this.gravity          = GRAVITY; // gravitational constant
             this.terminalVelocity = TERMINAL_VELOCITY // max fall velocity before gravity is ignored
+            this.chunkSize        = DEFAULT_CHUNK_SIZE // size of the collision chunks
 
             // non-static bodies in the physics world
             this.bodies = [];
             this.collisionGroups = {}; // collision groups
 
             // static & non-static bodies in the physics world
-            this.bodyChunks = new CollisionChunks(DEFAULT_CHUNK_SIZE, this.bounds);
+            this.bodyChunks = new CollisionChunks(this.chunkSize, this.bounds);
         }
 
         setBounds (bounds) {
             // set the bounds of the physics world
             this.bounds = bounds;
-            this.bodyChunks.resize(bounds);
+            this.bodyChunks.resize(bounds, this.chunkSize);
+        }
+
+        setChunkSize (chunksSize) {
+            // set the size of the collision chunks
+            this.chunkSize = chunksSize;
+            this.bodyChunks.resize(this.bounds, chunksSize);
+        }
+
+        setGravity (gravity) {
+            // set the gravitational constant
+            this.gravity = gravity;
+        }
+
+        setTerminalVelocity (velocity) {
+            // set the terminal velocity
+            this.terminalVelocity = velocity;
         }
 
         update (dt) {
@@ -401,18 +418,25 @@ export const Physics = (function () {
         getCollisionBodiesFor (body) {
             // returns all other bodies to check for collisions against
             // for the given body
-            let objectCollisionGroup = this.getCollisionGroup(body.collidesWith);
-
-            if (objectCollisionGroup !== null) {
-                // body only wants to collide with these
-                return objectCollisionGroup.get();
-            } else if (body.collidesWith !== null) {
-                // this group was not found
-                return [];
-            }
 
             // search surrounding area for bodies to collide with
-            return this.bodyChunks.getObjectsInArea(body);
+            const nearby = this.bodyChunks.getObjectsInArea(body);
+            
+            if (body.collidesWith === null) {
+                // body wants to collide with everything
+                return nearby;
+            } else {
+                const objectCollisionGroup = this.getCollisionGroup(body.collidesWith);
+                
+                if (objectCollisionGroup !== null) {
+                    // body only wants to collide with these
+                    const groupObjects = objectCollisionGroup.get();
+                    return nearby.filter((obj) => groupObjects.includes(obj));
+                } else {
+                    // this group was not found
+                    return [];
+                }
+            }
         }
 
         removeCollisonGroup (tagName) {

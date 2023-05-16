@@ -6,19 +6,24 @@ export const CollisionChunks = (function () {
             this.chunkSize = chunkSize; // size of each chunk
             this.chunks = []; // 2d array of chunks
             this.cache = new WeakMap(); // cache of the chunks an object is in
-            this.objects = 0; // number of objects in the chunks
+            this.objects = []; // objects stored in the chunks
 
             this.bounds = null; // bounds of the chunks
             this.chunksX = null; // number of chunks in X direction
             this.chunksY = null; // number of chunks in Y direction
 
-            this.resize(bounds);
+            this.resize(bounds, chunkSize);
         }
 
-        resize (bounds) {
+        resize (bounds, chunkSize) {
+            const objects = this.objects;
+
+            // clear the chunks
             this.clear();
             
             this.bounds = bounds;
+            this.chunkSize = chunkSize;
+
             this.chunksX = Math.ceil(bounds.x / this.chunkSize);
             this.chunksY = Math.ceil(bounds.y / this.chunkSize);
 
@@ -28,6 +33,11 @@ export const CollisionChunks = (function () {
                 for (let x = 0; x < this.chunksX; x++){
                     this.chunks[y][x] = [];
                 }
+            }
+
+            // reinsert objects back
+            for (let i = 0; i < objects.length; i++){
+                this.addObject(objects[i]);
             }
         }
 
@@ -139,37 +149,40 @@ export const CollisionChunks = (function () {
                 }
             }
 
-
+            this.objects.push(object);
             this.storeObjectChunks(object, inserted);
-            this.objects++;
         }
 
         removeObject (object, permanent) {
             // removes an object from the chunks it falls within
             const chunks = this.getObjectChunks(object);
 
-            if (chunks === undefined) return; // object not in chunks
+            if (chunks !== undefined) {
+                for (let i = 0; i < chunks.length; i++){
+                    const chunk = chunks[i];
+                    const index = chunk.indexOf(object);
+    
+                    if (index !== -1) chunk.splice(index, 1);
+                }
 
-            for (let i = 0; i < chunks.length; i++){
-                const chunk = chunks[i];
-                const index = chunk.indexOf(object);
+                if (permanent) {
+                    // avoid repeated key creations & deletions
+                    this.deleteObjectChunks(object)
+                }
+            };
 
-                if (index !== -1) chunk.splice(index, 1);
+            const index = this.objects.indexOf(object);
+
+            if (index !== -1) {
+                this.objects.splice(index, 1);
             }
-
-            if (permanent) {
-                // avoid repeated key creations & deletions
-                this.deleteObjectChunks(object)
-            }
-            
-            this.objects--;
         }
 
         clear () {
             // clears all objects
             this.chunks = [];
             this.cache = new Map();
-            this.objects = 0;
+            this.objects = [];
         }
     }
 })();
