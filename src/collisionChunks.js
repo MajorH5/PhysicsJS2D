@@ -8,9 +8,9 @@ export const CollisionChunks = (function () {
             this.cache = new WeakMap(); // cache of the chunks an object is in
             this.objects = []; // objects stored in the chunks
 
-            this.bounds = null; // bounds of the chunks
-            this.chunksX = null; // number of chunks in X direction
-            this.chunksY = null; // number of chunks in Y direction
+            this.bounds = Vector2.zero; // bounds of the chunks
+            this.chunksX = 0; // number of chunks in X direction
+            this.chunksY = 0; // number of chunks in Y direction
 
             this.resize(bounds, chunkSize);
         }
@@ -183,6 +183,9 @@ export const CollisionChunks = (function () {
             this.chunks = [];
             this.cache = new Map();
             this.objects = [];
+            this.bounds = Vector2.zero
+            this.chunksX = 0;
+            this.chunksY = 0;
         }
     }
 })();
