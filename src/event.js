@@ -15,6 +15,17 @@ export const Event = (function () {
             this.handlers.push(handler);
         }
 
+        listenOnce (handler) {
+            // binds a handler to the event that will only
+            // be called once
+            const onceHandler = (...data) => {
+                this.unlisten(onceHandler);
+                handler(...data);
+            };
+
+            this.listen(onceHandler);
+        }
+
         unlisten (handler) {
             // unbinds a handler from the event
             const index = this.handlers.indexOf(handler);
