@@ -89,5 +89,9 @@ export const Vector2 = (function () {
         ceil () {
             return new Vector2(Math.ceil(this.x), Math.ceil(this.y));
         }
+
+        clone () {
+            return new Vector2(this.x, this.y);
+        }
     }
 })();
