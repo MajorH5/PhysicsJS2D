@@ -1,4 +1,3 @@
-import { CollisionChunks } from "./collisionChunks.js";
 
 // class for managing which bodies
 // are allowed to collide with each other
