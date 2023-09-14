@@ -530,6 +530,11 @@ export const Physics = (function () {
             }
         }
 
+        raycast (ray) {
+            // cast a ray against the physics system
+            return this.bodyChunks.raycast(ray);
+        }
+
         pause () {
             // pauses the simulation
             this.isActive = false;

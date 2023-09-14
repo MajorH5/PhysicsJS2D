@@ -1,3 +1,4 @@
+import { RaycastResult } from './raycastResult.js';
 import { Vector2 } from './vector2.js';
 
 export const CollisionChunks = (function () {
@@ -95,6 +96,86 @@ export const CollisionChunks = (function () {
             }
 
             return Array.from(combined);
+        }
+
+        getPotentialRayHits (ray) {
+            // https://gamedev.stackexchange.com/questions/81267/how-do-i-generalise-bresenhams-line-algorithm-to-floating-point-endpoints/182143#182143
+            
+            const potential = new Set();
+
+            const start = ray.origin,
+                end = start.add(ray.direction);
+
+            let x = Math.floor(start.x);
+            let y = Math.floor(start.y);
+            let diffX = end.x - start.x;
+            let diffY = end.y - start.y;
+            let stepX = Math.sign(diffX);
+            let stepY = Math.sign(diffY);
+            
+            let xOffset = end.x > start.x ?
+                (Math.ceil(start.x) - start.x) :
+                (start.x - Math.floor(start.x));
+            let yOffset = end.y > start.y ?
+                (Math.ceil(start.y) - start.y) :
+                (start.y - Math.floor(start.y));
+
+            let angle = Math.atan2(-diffY, diffX);
+
+            let tMaxX = xOffset / Math.cos(angle);
+            let tMaxY = yOffset / Math.sin(angle);
+
+            let tDeltaX = 1.0 / Math.cos(angle);
+            let tDeltaY = 1.0 / Math.sin(angle);
+            
+            let manhattanDistance = Math.abs(Math.floor(end.x) - Math.floor(start.x)) +
+                Math.abs(Math.floor(end.y) - Math.floor(start.y));
+            
+            for (let t = 0; t <= manhattanDistance; t++) {
+                const chunk = this.getChunk(new Vector2(x, y));
+                
+                if (chunk !== null) {
+                    for (let i = 0; i < chunk.length; i++) {
+                        potential.add(chunk[i]);
+                    }
+                } else {
+                    // out of bounds
+                    break;
+                }
+
+                if (Math.abs(tMaxX) < Math.abs(tMaxY)) {
+                    tMaxX += tDeltaX;
+                    x += stepX;
+                } else {
+                    tMaxY += tDeltaY;
+                    y += stepY;
+                }
+            }
+
+            return Array.from(potential);
+        }
+
+        raycast (ray) {
+            // returns the first object hit by a ray
+            const intersecting = this.getPotentialRayHits(ray);
+
+            for (let i = 0; i < intersecting.length; i++){
+                const object = intersecting[i];
+
+                if (ray.canIntersect(object)) {
+                    const impactPoint = ray.intersectRect(object);
+
+                    if (impactPoint === null) {
+                        continue;
+                    }
+
+                    const distance = ray.origin.subtract(impactPoint).magnitude();
+
+                    return new RaycastResult(object, impactPoint, ray.direction, distance);
+                }
+            }
+
+            return RaycastResult.NONE;
         }
 
         storeObjectChunks (object, chunks) {
