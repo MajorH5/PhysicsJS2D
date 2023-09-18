@@ -8,17 +8,54 @@ export const Ray = (function () {
             this.origin = origin.clone();
             this.direction = direction.clone();
             this.filterFunction = null;
+            this.ignoreList = [];
+        }
+
+        ignore (bodyOrList) {
+            // accepts a body or list of bodies to ignore
+
+            if (Array.isArray(bodyOrList)) {
+                this.ignoreList.push(...bodyOrList);
+            } else {
+                this.ignoreList.push(bodyOrList);
+            }
+        }
+
+        unignore (bodyOrList) {
+            // accepts a body or list of bodies to unignore
+
+            if (Array.isArray(bodyOrList)) {
+                bodyOrList.forEach(body => {
+                    const index = this.ignoreList.indexOf(body);
+                    if (index !== -1) {
+                        this.ignoreList.splice(index, 1);
+                    }
+                });
+            } else {
+                const index = this.ignoreList.indexOf(bodyOrList);
+                if (index !== -1) {
+                    this.ignoreList.splice(index, 1);
+                }
+            }
         }
 
         canIntersect (body) {
             // returns true if the ray can intersect the body
             // based on the filter function
 
+            let canIntersect = true;
+
             if (this.filterFunction) {
-                return this.filterFunction(body);
+                // only allow intersection if the filter function allows
+                canIntersect = canIntersect && this.filterFunction(body);
             }
 
-            return true;
+            if (this.ignoreList.length > 0 && canIntersect) {
+                // skip intersection if the body is in the ignore list
+                canIntersect = canIntersect && !this.ignoreList.includes(body);
+            }
+
+            return canIntersect;
         }
 
         setFilter (filterFunction) {

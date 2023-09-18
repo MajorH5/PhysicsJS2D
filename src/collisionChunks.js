@@ -130,8 +130,9 @@ export const CollisionChunks = (function () {
             
             let manhattanDistance = Math.abs(Math.floor(end.x) - Math.floor(start.x)) +
                 Math.abs(Math.floor(end.y) - Math.floor(start.y));
-            
-            for (let t = 0; t <= manhattanDistance; t++) {
+            let chunkAligned = Math.ceil(manhattanDistance / this.chunkSize)
+
+            for (let t = 0; t <= chunkAligned; t++) {
                 const chunk = this.getChunk(new Vector2(x, y));
                 
                 if (chunk !== null) {
@@ -145,10 +146,10 @@ export const CollisionChunks = (function () {
 
                 if (Math.abs(tMaxX) < Math.abs(tMaxY)) {
                     tMaxX += tDeltaX;
-                    x += stepX;
+                    x += stepX * this.chunkSize;
                 } else {
                     tMaxY += tDeltaY;
-                    y += stepY;
+                    y += stepY * this.chunkSize;
                 }
             }
 
