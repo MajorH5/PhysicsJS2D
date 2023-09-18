@@ -7,9 +7,9 @@ export const Body = (function () {
     return class Body {
         constructor (properties = {}) {
             // body physical properties
-            this.position = properties.position || new Vector2();
-            this.velocity = properties.velocity || new Vector2();
-            this.size = properties.size || new Vector2();
+            this.position = properties.position || Vector2.zero;
+            this.velocity = properties.velocity || Vector2.zero;
+            this.size = properties.size || Vector2.zero;
             
             this.rotation = properties.rotation || 0;
             this.friction = 

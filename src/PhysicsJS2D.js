@@ -146,13 +146,15 @@ export const Physics = (function () {
                     body.position.x = 0;
                     body.velocity.x = 0;
                 }
-                body.outOfBounds.trigger();
-            } else if (body.position.x + body.size.x > this.bounds.x) {
+                body.outOfBounds.trigger(new Vector2(-1, 0));
+            }
+            
+            if (body.position.x + body.size.x > this.bounds.x) {
                 if (body.boundsConstrained) {
                     body.position.x = this.bounds.x - body.size.x;
                     body.velocity.x = 0;
                 }
-                body.outOfBounds.trigger();
+                body.outOfBounds.trigger(new Vector2(1, 0));
             }
 
 
@@ -161,13 +163,15 @@ export const Physics = (function () {
                     body.position.y = 0;
                     body.velocity.y = 0;
                 }
-                body.outOfBounds.trigger();
-            } else if (body.position.y + body.size.y > this.bounds.y) {
+                body.outOfBounds.trigger(new Vector2(0, -1));
+            }
+            
+            if (body.position.y + body.size.y > this.bounds.y) {
                 if (body.boundsConstrained) {
                     body.position.y = this.bounds.y - body.size.y;
                     body.velocity.y = 0;
                 }
-                body.outOfBounds.trigger();
+                body.outOfBounds.trigger(new Vector2(0, 1));
             }
 
             if (!body.position.equals(body.previousPosition) || !body.size.equals(body.previousSize)) {
@@ -178,7 +182,7 @@ export const Physics = (function () {
             body.previousSize = body.size;
 
             // all updates complete, inform the body
-            body.updated.trigger();
+            body.updated.trigger(dt);
         }
 
         updateCollisions (body, collisions) {

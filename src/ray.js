@@ -1,8 +1,9 @@
-import { RaycastResult } from "./raycastResult.js";
 import { Vector2 } from "./vector2.js";
 
 export const Ray = (function () {
     return class Ray {
+        static MAX_DISTANCE = 1000;
+        
         constructor (origin, direction) {
             this.origin = origin.clone();
             this.direction = direction.clone();
