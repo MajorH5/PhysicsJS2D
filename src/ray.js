@@ -9,6 +9,9 @@ export const Ray = (function () {
             this.direction = direction.clone();
             this.filterFunction = null;
             this.ignoreList = [];
+
+            this.start = this.origin;
+            this.end = this.origin.add(this.direction);
         }
 
         ignore (bodyOrList) {
